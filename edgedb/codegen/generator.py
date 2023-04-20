@@ -154,6 +154,8 @@ class Generator:
         self._defs = {}
         self._names = set()
         self._use_pydantic = False
+        if args.edgeql_path is not None:
+            self._edgeql_path = pathlib.Path(args.edgeql_path).absolute()
 
     def _new_file(self):
         self._cache.clear()
@@ -170,7 +172,10 @@ class Generator:
             print(f"Failed to connect to EdgeDB instance: {e}")
             sys.exit(61)
         with self._client:
-            self._process_dir(self._project_dir)
+            if self._edgeql_path is None:
+                self._process_dir(self._project_dir)
+            else:
+                self._process_dir(self._edgeql_path)
         for target, suffix, is_async in SUFFIXES:
             if target in self._targets:
                 self._async = is_async

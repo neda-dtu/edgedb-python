@@ -85,7 +85,7 @@ else:
         help="Add a mixin to generated dataclasses "
              "to skip Pydantic validation (default is to add the mixin).",
     )
-
+parser.add_argument("edgeql_path", default=None, help="Path to edgeql files to process")
 
 def main():
     args = parser.parse_args()
